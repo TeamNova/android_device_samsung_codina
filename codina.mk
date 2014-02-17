@@ -4,11 +4,6 @@ $(call inherit-product, device/samsung/u8500-common/common.mk)
 # For better compatibility with ROMs (like Slim, PAC)
 $(call inherit-product, vendor/samsung/u8500-common/codina/codina-vendor-blobs.mk)
 
-ifneq ($(TARGET_SCREEN_HEIGHT),800)
-# Call cm.mk because somehow it's not being called!
-$(call inherit-product, device/samsung/codina/cm.mk)
-endif
-
 LOCAL_PATH := device/samsung/codina
 
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
