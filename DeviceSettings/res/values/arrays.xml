@@ -70,5 +70,35 @@
         <item>22</item>
         <item>23</item>
     </string-array>
+    <string-array name="tcp_control_entries">
+        <item>cubic</item>
+        <item>reno</item>
+        <item>westwood</item>
+        <item>bic</item>
+        <item>htcp</item>
+        <item>hstcp</item>
+        <item>hybla</item>
+        <item>vegas</item>
+        <item>scalable</item>
+        <item>lp</item>
+        <item>veno</item>
+        <item>yeah</item>
+        <item>illinois</item>
+    </string-array>
+    <string-array name="tcp_control_entries_values">
+        <item>cubic</item>
+        <item>reno</item>
+        <item>westwood</item>
+        <item>bic</item>
+        <item>htcp</item>
+        <item>hstcp</item>
+        <item>hybla</item>
+        <item>vegas</item>
+        <item>scalable</item>
+        <item>lp</item>
+        <item>veno</item>
+        <item>yeah</item>
+        <item>illinois</item>
+    </string-array>
 
 </resources>

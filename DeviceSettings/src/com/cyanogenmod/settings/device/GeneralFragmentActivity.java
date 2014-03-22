@@ -21,12 +21,15 @@ import com.cyanogenmod.settings.device.R;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.SystemProperties;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.util.Log;
+import java.lang.Runtime;
+import java.io.IOException;
 
 public class GeneralFragmentActivity extends PreferenceFragment {
 
@@ -65,6 +68,20 @@ public class GeneralFragmentActivity extends PreferenceFragment {
 					getString(R.string.accelerometer_dialog_head),
 					getString(R.string.accelerometer_dialog_message));
 		}
+		
+		if (key.equals(DeviceSettings.KEY_SWITCH_STORAGE)) {
+			boolean b = ((CheckBoxPreference) preference).isChecked();
+			String cmd = "SwapStorages.sh " + (b?"1":"0");
+
+			try {
+			    Process proc = Runtime.getRuntime().exec(new String[]{"su","-c",cmd});
+			    proc.waitFor();
+			} catch (IOException e) {
+			    e.printStackTrace();
+			} catch (InterruptedException e) {
+			    e.printStackTrace();
+			}
+		}
 
 		return true;
 	}
@@ -79,6 +96,11 @@ public class GeneralFragmentActivity extends PreferenceFragment {
 				.getDefaultSharedPreferences(context);
 		boolean accelerometerCalib = sharedPrefs.getBoolean(
 				DeviceSettings.KEY_USE_ACCELEROMETER_CALIBRATION, true);
+
+		int sstor = SystemProperties.getInt("persist.sys.vold.switchexternal", 0) ;
+		SharedPreferences.Editor editor = sharedPrefs.edit();
+		editor.putBoolean(DeviceSettings.KEY_SWITCH_STORAGE,sstor==1?true:false);
+		editor.commit();
 
 		// When use accelerometer calibration value is set to 1, calibration is
 		// done at the same time, which

@@ -44,6 +44,7 @@ public class DeviceSettings extends FragmentActivity {
 	public static final String KEY_AC_CURRENCY = "ac_currency";
 	public static final String KEY_USB_CURRENCY = "usb_currency";
 	public static final String KEY_FSYNC_MODE = "fsync_mode";
+	public static final String KEY_TCP_CONTROL = "tcp_control";
 	public static final String KEY_MALI_L2MR = "mali_l2_mr";
 	public static final String KEY_MALI_PAM = "mali_pam";
 	public static final String KEY_USE_SWEEP2WAKE = "use_sweep2wake";
@@ -59,6 +60,8 @@ public class DeviceSettings extends FragmentActivity {
 	public static final String KEY_ENABLE_CLASSDWG = "enable_classdwg";
 	public static final String KEY_ENABLE_ADDIGGAIN2 = "enable_addiggain2";
 	public static final String KEY_ENABLE_EARDIGGAIN = "enable_eardiggain";
+	public static final String KEY_ANAGAIN3_CONTROL = "anagain3_control";
+	public static final String KEY_USE_WIFIPM_MAX = "use_wifipm_max";
 
 	ViewPager mViewPager;
 	TabsAdapter mTabsAdapter;

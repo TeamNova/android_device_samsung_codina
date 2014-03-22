@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <PreferenceCategory android:title="@string/storage_subcat_title" >
-        <CheckBoxPreference
-            android:key="switch_storage"
-            android:summary="@string/switch_storage_summary_head"
-            android:title="@string/switch_storage_title_head" />
-    </PreferenceCategory>
     <PreferenceCategory android:title="@string/touchscreen_subcat_title" >
         <CheckBoxPreference
             android:key="use_sweep2wake"
@@ -31,6 +25,15 @@
             android:summary="@string/fsync_summary_head"
             android:title="@string/fsync_title_head" />
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/tcp_subcat_title" >
+        <com.cyanogenmod.settings.device.TCPControl
+            android:defaultValue="cubic"
+            android:entries="@array/tcp_control_entries"
+            android:entryValues="@array/tcp_control_entries_values"
+            android:key="tcp_control"
+            android:summary="@string/tcp_summary_head"
+            android:title="@string/tcp_title_head" />
+    </PreferenceCategory>
     <PreferenceCategory android:title="@string/gpu_subcat_title" >
         <com.cyanogenmod.settings.device.MaliL2MaxReads
             android:defaultValue="48"
@@ -53,6 +56,12 @@
             android:key="use_spi_crc"
             android:summary="@string/use_spi_crc_summary_head"
             android:title="@string/use_spi_crc_title_head" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/wifi_subcat_title" >
+        <CheckBoxPreference
+            android:key="use_wifipm_max"
+            android:summary="@string/use_wifipm_max_summary_head"
+            android:title="@string/use_wifipm_max_summary_head" />
     </PreferenceCategory>
 
 </PreferenceScreen>

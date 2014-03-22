@@ -16,47 +16,64 @@
 
 package com.cyanogenmod.settings.device;
 
+import java.io.IOException;
+
 import android.content.Context;
-import android.util.AttributeSet;
 import android.content.SharedPreferences;
-import android.preference.Preference;
 import android.preference.ListPreference;
+import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceManager;
+import android.util.AttributeSet;
 
-public class FsyncMode extends ListPreference implements
+public class TCPControl extends ListPreference implements
 		OnPreferenceChangeListener {
-
-	public FsyncMode(Context context, AttributeSet attrs) {
+	
+	public TCPControl(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		this.setOnPreferenceChangeListener(this);
 	}
-
-	private static final String FILE = "/sys/kernel/fsync/mode";
-
-	public static boolean isSupported() {
-		return Utils.fileExists(FILE);
-	}
-
+	
+	static Process process;
+	static String newValueString;
+	
+	final static String[] COMMAND = {
+			"su", "-c",
+			"busybox sysctl -w net.ipv4.tcp_congestion_control=" +
+			newValueString
+		};
+	
 	/**
-	 * Restore Fsync mode from SharedPreferences.
+	 * Restore TCP Control algorithm from SharedPreferences.
 	 * 
 	 * @param context
 	 *            The context to read the SharedPreferences from
 	 */
 	public static void restore(Context context) {
-		if (!isSupported()) {
-			return;
-		}
-
 		SharedPreferences sharedPrefs = PreferenceManager
 				.getDefaultSharedPreferences(context);
-		Utils.writeValue(FILE,
-				sharedPrefs.getString(DeviceSettings.KEY_FSYNC_MODE, "0"));
+		newValueString = sharedPrefs.getString(DeviceSettings.KEY_TCP_CONTROL, "cubic");
+		try {
+			process = Runtime.getRuntime().exec(COMMAND);
+			process.waitFor();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
+	@Override
 	public boolean onPreferenceChange(Preference preference, Object newValue) {
-		Utils.writeValue(FILE, (String) newValue);
+		newValueString = (String) newValue;
+		try {
+			process = Runtime.getRuntime().exec(COMMAND);
+			process.waitFor();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		return true;
 	}
 
