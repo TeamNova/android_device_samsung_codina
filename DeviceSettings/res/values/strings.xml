@@ -69,6 +69,64 @@
     <!-- CATEGORY: TouchScreen -->
     <string name="touchscreen_subcat_title">Touchscreen</string>
     <string name="use_sweep2wake_title_head">Sweep2Wake</string>
-    <string name="use_sweep2wake_summary_head">Unlock device with a swype</string>
+    <string name="use_sweep2wake_summary_head">Unlock device with a swipe</string>
+    
+    <!-- CATEGORY: TCP -->
+    <string name="tcp_subcat_title">TCP</string>
+    <string name="tcp_title_head">TCP Congestion Avoidance Algorithm</string>
+    <string name="tcp_summary_head">Switching the algorithm affects your download and upload speeds and latency.</string>
+    
+    <!-- CATEGORY: WIFI -->
+    <string name="wifi_subcat_title">Wifi</string>
+    <string name="use_wifipm_max_title_head">Use Wifi PM_MAX mode</string>
+    <string name="use_wifipm_max_summary_head">Using PM_MAX saves power, but internet speed is reduced.</string>
+
+    <!-- TAB: AUDIO -->
+    <string name="category_audio_title">Audio</string>
+    
+    <!-- CATEGORY: Headset Gain -->
+    <string name="headsetgain_subcat_title">Headset Gain</string>
+    
+    <string name="enable_anagain3_title_head">AnaGain3</string>
+    <string name="enable_anagain3_summary_head">Enable headset analog gain path.</string>
+    
+    <string name="anagain3_control_title_head">AnaGain3 Gain Control</string>
+    <string name="anagain3_control_dialog_message">Select the amount of volume gain for AnaGain3.</string>
+    
+    <string name="enable_hsldiggain_title_head">HsLDigGain</string>
+    <string name="enable_hsldiggain_summary_head">Enable headset left digital path gain.</string>
+    
+    <string name="enable_hsrdiggain_title_head">HsRDigGain</string>
+    <string name="enable_hsrdiggain_summary_head">Enable headset right digital path gain.</string>
+        
+    <!-- CATEGORY: Misc Gain -->
+    <string name="miscgain_subcat_title">Misc Gain</string>
+    
+    <string name="enable_classdhpg_title_head">ClassDHPG</string>
+    <string name="enable_classdhpg_summary_head">Enable ClassD amplifier high-pass gain.</string>
+    
+    <string name="enable_addiggain2_title_head">ADDigGain2</string>
+    <string name="enable_addiggain2_summary_head">Enable phone microphone digital path gain.</string>
+    
+    <string name="enable_eardiggain_title_head">EarDigGain</string>
+    <string name="enable_eardiggain_summary_head">Enable earpiece digital path gain.</string>
+    
+    <!-- CATEGORY: Power Modes -->
+    <string name="powermodes_subcat_title">Power Modes</string>
+
+    <string name="enable_hslowpow_title_head">HsLowPow</string>
+    <string name="enable_hslowpow_summary_head">Enable headset driver low power mode.</string>
+    
+    <string name="enable_hsdaclowpow_title_head">HsDacLowPow</string>
+    <string name="enable_hsdaclowpow_summary_head">Enable headset digital-to-analog converter low power mode.</string>
+
+    <!-- CATEGORY: Miscellaneous -->
+    <string name="miscellaneous_subcat_title">Miscellaneous</string>
+    
+    <string name="enable_hshpen_title_head">HsHpEn</string>
+    <string name="enable_hshpen_summary_head">Enable headset high pass filter.</string>
+    
+    <string name="enable_classdwg_title_head">ClassDDithWGain</string>
+    <string name="enable_classdwg_summary_head">Enable control for the white component of dithering filter.</string>
 
 </resources>
