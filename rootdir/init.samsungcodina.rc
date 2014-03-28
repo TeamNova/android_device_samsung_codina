@@ -1,8 +1,5 @@
 import /init.samsungcodina.usb.rc
 
-on early-init
-    write /sys/block/mmcblk0/queue/scheduler noop
-
 on init
     export EXTERNAL_STORAGE /storage/sdcard0
     export SECONDARY_STORAGE /storage/sdcard1
@@ -402,6 +399,9 @@ on boot
 
     # system permissions for device parts
     chown system system /d/cpuidle/deepest_state
+    chown system system /sys/devices/system/cpu/sched_mc_power_savings
+    chown system system /sys/block/mmcblk0/queue/read_ahead_kb
+    chown system system /sys/class/misc/backlightnotification/enabled
     chown system system /sys/module/mali/parameters/mali_l2_max_reads
     chown system system /sys/module/mali/parameters/pre_allocated_memory_size_max
     chown system system /sys/kernel/abb-regu/VOTG
@@ -421,6 +421,7 @@ on boot
     chown system system /sys/kernel/bt404/sweep2wake
     chown system system /sys/module/mmc_core/parameters/use_spi_crc
     chown system system /sys/module/dhd/parameters/dhdpm_fast
+    chown system system /sys/kernel/mm/uksm/run
 
     # camera debug
     setprop persist.debug.extcamera.level 777
@@ -517,9 +518,6 @@ service gpsd /system/bin/gpsd -c /system/etc/gps.xml
 
 on property:ro.dumpstate.dmesg=1
     write /proc/sys/kernel/dmesg_restrict 0
-
-on property:sys.boot_completed=1
-    write /sys/block/mmcblk0/queue/scheduler sioplus
 
 service p2p_supplicant /system/bin/wpa_supplicant \
     -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
