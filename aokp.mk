@@ -1,5 +1,5 @@
 # Specify phone tech before including full_phone
-$(call inherit-product, vendor/aokp/config/gsm.mk)
+$(call inherit-product, vendor/aokp/configs/gsm.mk)
 
 # Release name
 PRODUCT_RELEASE_NAME := GT-I8160
@@ -7,9 +7,6 @@ PRODUCT_RELEASE_NAME := GT-I8160
 # Boot animation
 TARGET_SCREEN_HEIGHT := 800
 TARGET_SCREEN_WIDTH := 480
-
-# Inherit some common AOKP stuff.
-$(call inherit-product, vendor/aokp/config/common_full_phone.mk)
 
 # Inherit device configuration
 $(call inherit-product, device/samsung/codina/full_codina.mk)
