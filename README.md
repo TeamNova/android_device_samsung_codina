@@ -50,6 +50,10 @@ How to build:
 				git fetch http://review.cyanogenmod.org/CyanogenMod/android_system_vold refs/changes/15/56515/3
 				git cherry-pick FETCH_HEAD
 				cd ../..
+				cd packages/services/Telephony
+				git fetch https://github.com/TeamCanjica/android_packages_services_Telephony cm-11.0
+				git cherry-pick fdf281fdabe5e7517eb96f2faf159bbcc74ae4a6
+				cd ../../..
 		
 - Build CM11.0
   

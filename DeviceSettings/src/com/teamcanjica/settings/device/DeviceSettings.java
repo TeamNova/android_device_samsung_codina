@@ -48,7 +48,6 @@ public class DeviceSettings extends Activity implements OnItemClickListener{
 	public static final String KEY_SCHED_MC = "sched_mc";
 	public static final String KEY_DISABLE_BLN = "disable_bln";
 	public static final String KEY_READAHEADKB = "readaheadkb";
-	public static final String KEY_ENABLE_UKSM = "enable_uksm";
 	
 	public static final String SELECTION = "selection";
 	

@@ -32,7 +32,7 @@ public class DeepestSleepState extends ListPreference implements
 		this.setOnPreferenceChangeListener(this);
 	}
 
-	private static final String FILE = "/d/cpuidle/deepest_state";
+	private static final String FILE = "/sys/kernel/debug/cpuidle/deepest_state";
 
 	public static boolean isSupported() {
 		return Utils.fileExists(FILE);

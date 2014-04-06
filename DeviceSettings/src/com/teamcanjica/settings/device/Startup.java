@@ -35,5 +35,7 @@ public class Startup extends BroadcastReceiver {
 		PowermgmtFragmentActivity.restore(context);
 		DeepestSleepState.restore(context);
 		AdvancedFragmentActivity.restore(context);
+		SchedMC.restore(context);
+		TCPControl.restore(context);
 	}
 }

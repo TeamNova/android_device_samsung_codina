@@ -39,9 +39,7 @@ public class AdvancedFragmentActivity extends PreferenceFragment {
 
 	private static final String FILE_SPI_CRC = "/sys/module/mmc_core/parameters/use_spi_crc";
 
-	private static final String FILE_BLN = "/sys/class/misc/backlightnotification/enabled";
-
-	private static final String FILE_UKSM = "/sys/kernel/mm/uksm/run";		  
+	private static final String FILE_BLN = "/sys/class/misc/backlightnotification/enabled";	  
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -49,8 +47,8 @@ public class AdvancedFragmentActivity extends PreferenceFragment {
 
 		addPreferencesFromResource(R.xml.advanced_preferences);
 
-		getActionBar().setTitle(getResources().getString(R.string.advanced_name));
-		getActionBar().setIcon(getResources().getDrawable(R.drawable.ace2settings_icon));
+		getActivity().getActionBar().setTitle(getResources().getString(R.string.advanced_name));
+		getActivity().getActionBar().setIcon(getResources().getDrawable(R.drawable.ace2settings_icon));
 	}
 
 	@Override
@@ -102,12 +100,6 @@ public class AdvancedFragmentActivity extends PreferenceFragment {
 			Utils.writeValue(FILE_BLN, boxValue);
 		}
 
-		if (key.equals(DeviceSettings.KEY_ENABLE_UKSM)) {
-			boxValue = (((CheckBoxPreference) preference).isChecked() ? "1"
-					: "0");
-			Utils.writeValue(FILE_UKSM, boxValue);
-		}
-
 		return true;
 	}
 
@@ -132,10 +124,6 @@ public class AdvancedFragmentActivity extends PreferenceFragment {
 		String blnvalue = sharedPrefs.getBoolean(
 				DeviceSettings.KEY_DISABLE_BLN, true) ? "0" : "1";
 		Utils.writeValue(FILE_BLN, blnvalue);
-
-		String uksmvalue = sharedPrefs.getBoolean(
-				DeviceSettings.KEY_ENABLE_UKSM, false) ? "1" : "0";
-		Utils.writeValue(FILE_UKSM, uksmvalue);
 
 	}
 

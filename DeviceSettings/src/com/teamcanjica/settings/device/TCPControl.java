@@ -16,8 +16,6 @@
 
 package com.teamcanjica.settings.device;
 
-import java.io.IOException;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.ListPreference;
@@ -33,15 +31,12 @@ public class TCPControl extends ListPreference implements
 		super(context, attrs);
 		this.setOnPreferenceChangeListener(this);
 	}
+
+	private static final String FILE = "/proc/sys/net/ipv4/tcp_congestion_control";
 	
-	Process process;
-	String newValueString;
-	
-	String[] COMMAND = {
-			"su", "-c",
-			"busybox sysctl -w net.ipv4.tcp_congestion_control=" +
-			newValueString
-		};
+	public static boolean isSupported() {
+		return Utils.fileExists(FILE);
+	}
 	
 	/**
 	 * Restore TCP Control algorithm from SharedPreferences.
@@ -49,31 +44,20 @@ public class TCPControl extends ListPreference implements
 	 * @param context
 	 *            The context to read the SharedPreferences from
 	 */
-	public void restore(Context context) {
+	public static void restore(Context context) {
+		if (!isSupported()) {
+			return;
+		}
+
 		SharedPreferences sharedPrefs = PreferenceManager
 				.getDefaultSharedPreferences(context);
-		newValueString = sharedPrefs.getString(DeviceSettings.KEY_TCP_CONTROL, "cubic");
-		try {
-			process = Runtime.getRuntime().exec(COMMAND);
-			process.waitFor();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		Utils.writeValue(FILE,
+				sharedPrefs.getString(DeviceSettings.KEY_TCP_CONTROL, "cubic"));
 	}
 
 	@Override
 	public boolean onPreferenceChange(Preference preference, Object newValue) {
-		newValueString = (String) newValue;
-		try {
-			process = Runtime.getRuntime().exec(COMMAND);
-			process.waitFor();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		Utils.writeValue(FILE, (String) newValue);
 		return true;
 	}
 
