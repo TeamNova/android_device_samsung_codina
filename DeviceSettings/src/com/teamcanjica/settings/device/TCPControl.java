@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2012 The CyanogenMod Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.teamcanjica.settings.device;
 
 import android.content.Context;
@@ -23,6 +7,8 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
+import java.lang.Runtime;
+import java.io.IOException;
 
 public class TCPControl extends ListPreference implements
 		OnPreferenceChangeListener {
@@ -32,12 +18,10 @@ public class TCPControl extends ListPreference implements
 		this.setOnPreferenceChangeListener(this);
 	}
 
-	private static final String FILE = "/proc/sys/net/ipv4/tcp_congestion_control";
-	
-	public static boolean isSupported() {
-		return Utils.fileExists(FILE);
-	}
-	
+	Process process;
+	String newValueString;
+	static String restoreValueString;
+
 	/**
 	 * Restore TCP Control algorithm from SharedPreferences.
 	 * 
@@ -45,19 +29,33 @@ public class TCPControl extends ListPreference implements
 	 *            The context to read the SharedPreferences from
 	 */
 	public static void restore(Context context) {
-		if (!isSupported()) {
-			return;
-		}
-
 		SharedPreferences sharedPrefs = PreferenceManager
 				.getDefaultSharedPreferences(context);
-		Utils.writeValue(FILE,
-				sharedPrefs.getString(DeviceSettings.KEY_TCP_CONTROL, "cubic"));
+
+		restoreValueString = sharedPrefs.getString(DeviceSettings.KEY_TCP_CONTROL, "cubic");
+		String restorecommand = "sysctl -w net.ipv4.tcp_congestion_control=" + restoreValueString;
+		try {
+			Process restore = Runtime.getRuntime().exec(new String[]{"su","-c",restorecommand});
+			restore.waitFor();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public boolean onPreferenceChange(Preference preference, Object newValue) {
-		Utils.writeValue(FILE, (String) newValue);
+		newValueString = (String) newValue;
+		String command = "sysctl -w net.ipv4.tcp_congestion_control=" + newValueString;
+	try {
+		    Process proc = Runtime.getRuntime().exec(new String[]{"su","-c",command});
+		    proc.waitFor();
+		} catch (IOException e) {
+		    e.printStackTrace();
+		} catch (InterruptedException e) {
+		    e.printStackTrace();
+		}
 		return true;
 	}
 

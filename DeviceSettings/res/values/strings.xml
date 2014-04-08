@@ -139,6 +139,7 @@
     <!-- SUBCATEGORY: Scheduler -->
     <string name="readaheadkb_dialog_message">Select the readahead buffer size.</string>
     <string name="readaheadkb_title_head">Readahead buffer size</string>
+    <string name="readaheadkb_summary_head">Readahead kB will affect SD R/W performance.</string>
 
     <!-- SUBCATEGORY: MMC -->
     <string name="mmc_subcat_title">MMC</string>

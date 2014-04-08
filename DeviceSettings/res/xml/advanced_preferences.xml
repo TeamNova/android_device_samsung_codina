@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:cyanogenmod="http://schemas.android.com/apk/res-auto" >
+        xmlns:teamcanjica="http://schemas.android.com/apk/res/com.teamcanjica.settings.device" >
 
     <PreferenceCategory android:title="@string/storage_subcat_title" >
         <CheckBoxPreference
@@ -20,11 +20,13 @@
        <com.teamcanjica.settings.device.ReadaheadkB
            android:defaultValue="512"
            android:dialogMessage="@string/readaheadkb_dialog_message"
-           android:max="4096"
-           cyanogenmod:min="128"
-           cyanogenmod:progressTextSuffix="kB"
+           teamcanjica:maximumValue="4096"
+           teamcanjica:minimumValue="128"
+           teamcanjica:units="kB"
+           teamcanjica:stepSize="128"
            android:key="readaheadkb"
-           android:title="@string/readaheadkb_title_head" />
+           android:title="@string/readaheadkb_title_head"
+           android:summary="@string/readaheadkb_summary_head" />
    </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/mmc_subcat_title" >

@@ -37,5 +37,6 @@ public class Startup extends BroadcastReceiver {
 		AdvancedFragmentActivity.restore(context);
 		SchedMC.restore(context);
 		TCPControl.restore(context);
+		ReadaheadkB.restore(context);
 	}
 }

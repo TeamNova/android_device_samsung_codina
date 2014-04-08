@@ -43,11 +43,11 @@ public class DeviceSettings extends Activity implements OnItemClickListener{
 	public static final String KEY_ENABLE_CLASSDWG = "enable_classdwg";
 	public static final String KEY_ENABLE_ADDIGGAIN2 = "enable_addiggain2";
 	public static final String KEY_ENABLE_EARDIGGAIN = "enable_eardiggain";
-	public static final String KEY_ANAGAIN3_CONTROL = "anagain3_control";
 	public static final String KEY_USE_WIFIPM_MAX = "use_wifipm_max";
 	public static final String KEY_SCHED_MC = "sched_mc";
 	public static final String KEY_DISABLE_BLN = "disable_bln";
 	public static final String KEY_READAHEADKB = "readaheadkb";
+	public static final String KEY_SEEKBARVAL = "seekbarvalue";
 	
 	public static final String SELECTION = "selection";
 	

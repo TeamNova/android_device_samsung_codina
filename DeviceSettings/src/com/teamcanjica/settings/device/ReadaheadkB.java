@@ -1,20 +1,20 @@
 package com.teamcanjica.settings.device;
 
-import com.teamcanjica.settings.device.R;
-
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.TypedArray;
+import android.preference.Preference;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 
-public class ReadaheadkB extends CustomSeekBarDialogPreference {
+public class ReadaheadkB extends CustomSeekBarDialogPreference implements OnPreferenceChangeListener {
 
-    private static final String FILE = " /sys/block/mmcblk0/queue/read_ahead_kb";
-
-	public ReadaheadkB(Context context) {
-		this(context, null);
+    public ReadaheadkB(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		this.setOnPreferenceChangeListener(this);
 	}
+
+	private static final String FILE = "/sys/block/mmcblk0/queue/read_ahead_kb";
 
 	public static boolean isSupported() {
 		return Utils.fileExists(FILE);
@@ -34,47 +34,13 @@ public class ReadaheadkB extends CustomSeekBarDialogPreference {
 		SharedPreferences sharedPrefs = PreferenceManager
 				.getDefaultSharedPreferences(context);
 		Utils.writeValue(FILE,
-				sharedPrefs.getString(DeviceSettings.KEY_READAHEADKB, "0"));
+				sharedPrefs.getString(DeviceSettings.KEY_READAHEADKB, "512"));
 	}
 
-	public ReadaheadkB(Context context, AttributeSet attrs)
-    {
-        super(context, attrs);
- 
-        // get attributes specified in XML
-        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.CustomSeekBarDialogPreference, 0, 0);
-        try
-        {
-            setMinProgress(a.getInteger(R.styleable.CustomSeekBarDialogPreference_min, DEFAULT_MIN_PROGRESS));
-            setMaxProgress(a.getInteger(R.styleable.CustomSeekBarDialogPreference_android_max, DEFAULT_MAX_PROGRESS));
-            setProgressTextSuffix(a.getString(R.styleable.CustomSeekBarDialogPreference_progressTextSuffix));
-        }
-        finally
-        {
-            a.recycle();
-        }
- 
-        // set layout
-        setDialogLayoutResource(R.layout.preference_seek_bar_dialog);
-        setPositiveButtonText(android.R.string.ok);
-        setNegativeButtonText(android.R.string.cancel);
-        setDialogIcon(null);
-    }
-
 	@Override
-    protected void onDialogClosed(boolean positiveResult)
-    {
-        super.onDialogClosed(positiveResult);
- 
-        // when the user selects "OK", persist the new value
-        if (positiveResult)
-        {
-            int seekBarProgress = mSeekBar.getProgress() + mMinProgress;
-            if (callChangeListener(seekBarProgress))
-            {
-                Utils.writeValue(FILE, "" + seekBarProgress);
-                setProgress(seekBarProgress);
-            }
-        }
-    }
+	public boolean onPreferenceChange(Preference preference, Object newValue) {
+		Utils.writeValue(FILE, String.valueOf((Integer) newValue + 128));
+		return true;
+	}
+
 }

@@ -1,250 +1,123 @@
 package com.teamcanjica.settings.device;
 
-import com.teamcanjica.settings.device.R;
-
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-public class CustomSeekBarDialogPreference extends DialogPreference {
-    protected static final int DEFAULT_MIN_PROGRESS = 0;
-    protected static final int DEFAULT_MAX_PROGRESS = 100;
-    protected static final int DEFAULT_PROGRESS = 0;
- 
-    protected int mMinProgress;
-    protected int mMaxProgress;
-    protected int mProgress;
-    protected CharSequence mProgressTextSuffix;
-    protected TextView mProgressText;
-    protected SeekBar mSeekBar;
- 
-    public CustomSeekBarDialogPreference(Context context)
-    {
-        this(context, null);
-    }
- 
-    public CustomSeekBarDialogPreference(Context context, AttributeSet attrs)
-    {
-        super(context, attrs);
- 
-        // get attributes specified in XML
-        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.CustomSeekBarDialogPreference, 0, 0);
-        try
-        {
-            setMinProgress(a.getInteger(R.styleable.CustomSeekBarDialogPreference_min, DEFAULT_MIN_PROGRESS));
-            setMaxProgress(a.getInteger(R.styleable.CustomSeekBarDialogPreference_android_max, DEFAULT_MAX_PROGRESS));
-            setProgressTextSuffix(a.getString(R.styleable.CustomSeekBarDialogPreference_progressTextSuffix));
-        }
-        finally
-        {
-            a.recycle();
-        }
- 
-        // set layout
-        setDialogLayoutResource(R.layout.preference_seek_bar_dialog);
-        setPositiveButtonText(android.R.string.ok);
-        setNegativeButtonText(android.R.string.cancel);
-        setDialogIcon(null);
-    }
- 
-    @Override
-    protected void onSetInitialValue(boolean restore, Object defaultValue)
-    {
-        setProgress(restore ? getPersistedInt(DEFAULT_PROGRESS) : (Integer) defaultValue);
-    }
- 
-    @Override
-    protected Object onGetDefaultValue(TypedArray a, int index)
-    {
-        return a.getInt(index, DEFAULT_PROGRESS);
-    }
- 
-    @Override
-    protected void onBindDialogView(View view)
-    {
-        super.onBindDialogView(view);
- 
-        TextView dialogMessageText = (TextView) view.findViewById(R.id.text_dialog_message);
-        dialogMessageText.setText(getDialogMessage());
- 
-        mProgressText = (TextView) view.findViewById(R.id.text_progress);
- 
-        mSeekBar = (SeekBar) view.findViewById(R.id.seek_bar);
-        mSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener()
-        {
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar)
-            {
-            }
- 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar)
-            {
-            }
- 
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
-            {
-                // update text that displays the current SeekBar progress value
-                // note: this does not persist the progress value. that is only ever done in setProgress()
-                String progressStr = String.valueOf(progress + mMinProgress);
-                mProgressText.setText(mProgressTextSuffix == null ? progressStr : progressStr.concat(mProgressTextSuffix.toString()));
-            }
-        });
-        mSeekBar.setMax(mMaxProgress - mMinProgress);
-        mSeekBar.setProgress(mProgress - mMinProgress);
-    }
- 
-    public int getMinProgress()
-    {
-        return mMinProgress;
-    }
- 
-    public void setMinProgress(int minProgress)
-    {
-        mMinProgress = minProgress;
-        setProgress(Math.max(mProgress, mMinProgress));
-    }
- 
-    public int getMaxProgress()
-    {
-        return mMaxProgress;
-    }
- 
-    public void setMaxProgress(int maxProgress)
-    {
-        mMaxProgress = maxProgress;
-        setProgress(Math.min(mProgress, mMaxProgress));
-    }
- 
-    public int getProgress()
-    {
-        return mProgress;
-    }
- 
-    public void setProgress(int progress)
-    {
-        progress = Math.max(Math.min(progress, mMaxProgress), mMinProgress);
- 
-        if (progress != mProgress)
-        {
-            mProgress = progress;
-            persistInt(progress);
-            notifyChanged();
-        }
-    }
- 
-    public CharSequence getProgressTextSuffix()
-    {
-        return mProgressTextSuffix;
-    }
- 
-    public void setProgressTextSuffix(CharSequence progressTextSuffix)
-    {
-        mProgressTextSuffix = progressTextSuffix;
-    }
- 
-    @Override
-    protected void onDialogClosed(boolean positiveResult)
-    {
-        super.onDialogClosed(positiveResult);
- 
-        // when the user selects "OK", persist the new value
-        if (positiveResult)
-        {
-            int seekBarProgress = mSeekBar.getProgress() + mMinProgress;
-            if (callChangeListener(seekBarProgress))
-            {
-                setProgress(seekBarProgress);
-            }
-        }
-    }
- 
-    @Override
-    protected Parcelable onSaveInstanceState()
-    {
-        // save the instance state so that it will survive screen orientation changes and other events that may temporarily destroy it
-        final Parcelable superState = super.onSaveInstanceState();
- 
-        // set the state's value with the class member that holds current setting value
-        final SavedState myState = new SavedState(superState);
-        myState.minProgress = getMinProgress();
-        myState.maxProgress = getMaxProgress();
-        myState.progress = getProgress();
- 
-        return myState;
-    }
- 
-    @Override
-    protected void onRestoreInstanceState(Parcelable state)
-    {
-        // check whether we saved the state in onSaveInstanceState()
-        if (state == null || !state.getClass().equals(SavedState.class))
-        {
-            // didn't save the state, so call superclass
-            super.onRestoreInstanceState(state);
-            return;
-        }
- 
-        // restore the state
-        SavedState myState = (SavedState) state;
-        setMinProgress(myState.minProgress);
-        setMaxProgress(myState.maxProgress);
-        setProgress(myState.progress);
- 
-        super.onRestoreInstanceState(myState.getSuperState());
-    }
- 
-    protected static class SavedState extends BaseSavedState
-    {
-        int minProgress;
-        int maxProgress;
-        int progress;
- 
-        public SavedState(Parcelable superState)
-        {
-            super(superState);
-        }
- 
-        public SavedState(Parcel source)
-        {
-            super(source);
- 
-            minProgress = source.readInt();
-            maxProgress = source.readInt();
-            progress = source.readInt();
-        }
- 
-        @Override
-        public void writeToParcel(Parcel dest, int flags)
-        {
-            super.writeToParcel(dest, flags);
- 
-            dest.writeInt(minProgress);
-            dest.writeInt(maxProgress);
-            dest.writeInt(progress);
-        }
- 
-        public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.Creator<SavedState>()
-        {
-            @Override
-            public SavedState createFromParcel(Parcel in)
-            {
-                return new SavedState(in);
-            }
- 
-            @Override
-            public SavedState[] newArray(int size)
-            {
-                return new SavedState[size];
-            }
-        };
-    }
+public class CustomSeekBarDialogPreference extends
+		DialogPreference implements SeekBar.OnSeekBarChangeListener {
+	// Layout widgets.
+	private SeekBar seekBar = null;
+	private TextView valueText = null;
+
+	// Custom xml attributes.
+	private int maximumValue = 0;
+	private int minimumValue = 0;
+	private int stepSize = 0;
+	private String units = null;
+
+	private int value = 0;
+
+	/**
+	 * The SeekBarDialogPreference constructor.
+	 * @param context of this preference.
+	 * @param attrs custom xml attributes.
+	 */
+	public CustomSeekBarDialogPreference(Context context, AttributeSet attrs) {
+		super(context, attrs);
+
+		TypedArray typedArray = context.obtainStyledAttributes(attrs,
+			R.styleable.CustomSeekBarDialogPreference);
+
+		maximumValue = typedArray.getInteger(
+			R.styleable.CustomSeekBarDialogPreference_maximumValue, 0);
+		minimumValue = typedArray.getInteger(
+			R.styleable.CustomSeekBarDialogPreference_minimumValue, 0);
+		stepSize = typedArray.getInteger(
+			R.styleable.CustomSeekBarDialogPreference_stepSize, 1);
+		units = typedArray.getString(
+			R.styleable.CustomSeekBarDialogPreference_units);
+
+		typedArray.recycle();
+	}
+	/**
+	 * {@inheritDoc}
+	 */
+	protected View onCreateDialogView() {
+		LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+
+		View view = layoutInflater.inflate(
+			R.layout.preference_seek_bar_dialog, null);
+
+		seekBar = (SeekBar)view.findViewById(R.id.seekbar);
+		valueText = (TextView)view.findViewById(R.id.valueText);
+
+		// Get the persistent value and correct it for the minimum value.
+		value = getPersistedInt(minimumValue) - minimumValue;
+
+		// You're never know...
+		if (value < 0) {
+			value = 0;
+		}
+
+		seekBar.setOnSeekBarChangeListener(this);
+		seekBar.setKeyProgressIncrement(stepSize);
+		seekBar.setMax(maximumValue - minimumValue);
+		SharedPreferences prefs = getContext().getSharedPreferences(DeviceSettings.KEY_SEEKBARVAL, Context.MODE_PRIVATE);
+		value = prefs.getInt("seekBarValue", 512);
+		seekBar.setProgress(value);
+
+		return view;
+	}
+	/**
+	 * {@inheritDoc}
+	 */
+	public void onProgressChanged(SeekBar seek, int newValue,
+			boolean fromTouch) {
+		// Round the value to the closest integer value.
+		if (stepSize >= 1) {
+			value = Math.round(newValue/stepSize)*stepSize;
+		}
+		else {
+			value = newValue;
+		}
+
+		// Set the valueText text.
+		valueText.setText(String.valueOf(value + minimumValue) +
+			(units == null ? "" : units));
+
+		callChangeListener(value);
+	}
+	/**
+	 * {@inheritDoc}
+	 */
+	public void onStartTrackingTouch(SeekBar seek) {
+	}
+	/**
+	 * {@inheritDoc}
+	 */
+	public void onStopTrackingTouch(SeekBar seek) {
+	}
+	/**
+	 * {@inheritDoc}
+	 */
+	public void onClick(DialogInterface dialog, int which) {
+		// if the positive button is clicked, we persist the value.
+		if (which == DialogInterface.BUTTON_POSITIVE) {
+			SharedPreferences prefs = getContext().getSharedPreferences(DeviceSettings.KEY_SEEKBARVAL, Context.MODE_PRIVATE);
+			prefs.edit().putInt("seekBarValue", seekBar.getProgress()).commit();
+			if (shouldPersist()) {
+				persistInt(value + minimumValue);
+			}
+		}
+
+		super.onClick(dialog, which);
+	}
 }
