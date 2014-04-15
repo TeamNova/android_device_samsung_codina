@@ -8,8 +8,8 @@ How to build:
 
 - Make a workspace
 
-  $ mkdir -p ~/cyanogenmod/system
-  $ cd ~/cyanogenmod/system
+  $ mkdir -p ~/cyanogenmod
+  $ cd ~/cyanogenmod
   
 - Do repo init & sync
 
@@ -35,12 +35,13 @@ How to build:
 				cd ..
 				cd native
 				git fetch https://github.com/TeamCanjica/android_frameworks_native cm-11.0
-				git cherry-pick d9dd39ca7935c16a34ce8b3e8c00dd6bae680d49
-				git revert 58ce0401ba99c1fc21a5b7b3336f544a8b1da55e
+				git cherry-pick 8dd8f0c8b8872affa37a2f50953f07d4815f2fec
 				cd ..
+				git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_native refs/changes/11/59311/1
+				git cherry-pick FETCH_HEAD
 				cd base
 				git fetch https://github.com/TeamCanjica/android_frameworks_base cm-11.0
-				git cherry-pick 3826055d49ec70ab3d0e130a8e444fd334806fa5
+				git cherry-pick bb9d91d07fdc20c2443c9668e2f20e392b25bac4
 				cd ../..
 				cd system/core
 				git fetch https://github.com/TeamCanjica/android_system_core cm-11.0
@@ -48,17 +49,13 @@ How to build:
 				git cherry-pick b6cb91b1f70c969bb0f818a24111c0ca055be590
 				cd ..
 				cd vold
-				git fetch http://review.cyanogenmod.org/CyanogenMod/android_system_vold refs/changes/15/56515/2
+				git fetch http://review.cyanogenmod.org/CyanogenMod/android_system_vold refs/changes/15/56515/3
 				git cherry-pick FETCH_HEAD
 				cd ../..
-				cd hardware/libhardware_legacy
-				git fetch https://github.com/TeamCanjica/android_hardware_libhardware_legacy cm-11.0
-				git cherry-pick 9c2250d32a1eda9afe3b5cefe3306104148aa532
-				cd ../..
-				cd build
-				git fetch https://github.com/TeamCanjica/android_build cm-10.2
-				git cherry-pick 8f031162d08dadd1595d8c1e42d23134bbdb93d3
-				cd ..
+				cd packages/services/Telephony
+				git fetch https://github.com/TeamCanjica/android_packages_services_Telephony cm-11.0
+				git cherry-pick fdf281fdabe5e7517eb96f2faf159bbcc74ae4a6
+				cd ../../..
 		
 - Build CM11.0
   
