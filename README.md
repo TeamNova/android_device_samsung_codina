@@ -13,7 +13,7 @@ How to build:
   
 - Do repo init & sync
 
-  repo init https://github.com/TeamCanjica/android.git -b cm-11.0
+  repo init -u https://github.com/TeamCanjica/android.git -b cm-11.0
   
   repo sync -j32
 
