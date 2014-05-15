@@ -31,22 +31,22 @@ How to build:
 				cd ..
 				cd frameworks/av
 				git fetch https://github.com/TeamCanjica/android_frameworks_av cm-11.0
-				git cherry-pick 803bb5dd145630c0239a61bd4d58c3728f2dba57
+				git cherry-pick 5c4dd9cc832f47017df8930d77e2d175744af3eb
 				cd ..
 				cd native
 				git fetch https://github.com/TeamCanjica/android_frameworks_native cm-11.0
-				git cherry-pick 8dd8f0c8b8872affa37a2f50953f07d4815f2fec
-				cd ..
+				git cherry-pick 213b1afc3177f483598e23b9d09738d29c8129cb
 				git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_native refs/changes/11/59311/1
 				git cherry-pick FETCH_HEAD
+				cd ..
 				cd base
 				git fetch https://github.com/TeamCanjica/android_frameworks_base cm-11.0
-				git cherry-pick bb9d91d07fdc20c2443c9668e2f20e392b25bac4
+				git cherry-pick de30387b3c32c2a9cf653590c8454bd002bf0dd1
 				cd ../..
 				cd system/core
 				git fetch https://github.com/TeamCanjica/android_system_core cm-11.0
-				git cherry-pick 7bd81ee140c09066ede2ffab47da1a1c4e54e021
-				git cherry-pick b6cb91b1f70c969bb0f818a24111c0ca055be590
+				git cherry-pick 02f79390ff2d6a0e173d1dd8bfae02844d4c33a6
+				git cherry-pick 910ccc43a23b042df3df12ed1bbbe32954749e59
 				cd ..
 				cd vold
 				git fetch http://review.cyanogenmod.org/CyanogenMod/android_system_vold refs/changes/15/56515/3
